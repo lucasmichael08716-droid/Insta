@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>InstaWave</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0e111b;color:white;font-family:Arial,sans-serif}
+header{padding:18px 20px;border-bottom:1px solid #303746;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#10131e}
+.logo{font-size:25px;font-weight:bold}
+.logo span{color:#35aaff}
+button{cursor:pointer;border:0;border-radius:12px;padding:12px;background:#258ee9;color:white;font-weight:bold}
+main{max-width:650px;margin:auto;padding:18px 15px 100px}
+.stories{display:flex;gap:20px;overflow:auto;padding:12px 0 22px}
+.story{text-align:center;min-width:65px;color:#aeb8ca;font-size:13px}
+.circle{width:68px;height:68px;border-radius:50%;border:4px solid #e34bba;background:#263b57;display:grid;place-items:center;font-size:23px;margin:auto auto 8px}
+h2{font-size:23px}
+.post{background:#191e2b;border:1px solid #30394b;border-radius:20px;overflow:hidden;margin:20px 0}
+.user{padding:15px;display:flex;align-items:center;gap:12px}
+.avatar{width:42px;height:42px;border-radius:50%;background:#315c83;display:grid;place-items:center;font-weight:bold}
+.username{font-weight:bold}
+.handle{color:#9ca8ba;font-size:13px;margin-top:4px}
+.art{height:300px;background:linear-gradient(135deg,#315b79,#bd648f,#efad65);display:grid;place-items:center;font-size:85px}
+.actions{padding:15px;display:flex;gap:20px;align-items:center;color:#b6c1d2}
+.actions button{background:transparent;color:white;padding:0;font-size:23px}
+.caption{padding:0 15px 18px;line-height:1.6}
+nav{position:fixed;bottom:0;left:0;right:0;background:#171c29;border-top:1px solid #30394b;display:flex;justify-content:space-around;padding:13px 3px}
+nav button{background:transparent;color:#aeb8ca;font-size:12px;padding:7px}
+nav button:focus{color:#35aaff}
+input,textarea{width:100%;padding:14px;margin:8px 0;background:#252c3b;color:white;border:1px solid #465066;border-radius:10px}
+#composer{display:none;background:#191e2b;padding:18px;border-radius:15px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">Insta<span>Wave</span></div>
+<button onclick="showCreate()">+ Create</button>
+</header>
+
+<main>
+<div class="stories">
+<div class="story"><div class="circle">+</div>Your story</div>
+<div class="story"><div class="circle">A</div>Ada</div>
+<div class="story"><div class="circle">D</div>Daniel</div>
+<div class="story"><div class="circle">Z</div>Zara</div>
+</div>
+
+<h2>Your feed</h2>
+
+<div id="posts">
+<div class="post">
+<div class="user">
+<div class="avatar">Z</div>
+<div><div class="username">Zara</div><div class="handle">@zara_wave</div></div>
+</div>
+<div class="art">🎧</div>
+<div class="actions">
+<button onclick="like(this)">♡</button>
+<span>♧</span>
+<span class="likes">24 likes</span>
+</div>
+<div class="caption"><b>Zara</b> Good music makes every day better. 🎶</div>
+</div>
+</div>
+
+<div id="composer">
+<h2>Create a post</h2>
+<input id="name" placeholder="Your name">
+<textarea id="caption" placeholder="What's on your mind?"></textarea>
+<button onclick="publish()">Publish post</button>
+<button onclick="hideCreate()" style="background:#454c5b">Cancel</button>
+</div>
+</main>
+
+<nav>
+<button onclick="window.scrollTo(0,0)">⌂<br>Home</button>
+<button onclick="alert('Discover is coming soon!')">⌕<br>Discover</button>
+<button onclick="showCreate()">＋<br>Create</button>
+<button onclick="alert('Messaging is coming soon!')">✉<br>Messages</button>
+<button onclick="alert('Profile is coming soon!')">◉<br>Profile</button>
+</nav>
+
+<script>
+function like(button){
+let liked=button.dataset.liked==="yes";
+button.dataset.liked=liked?"no":"yes";
+button.textContent=liked?"♡":"♥";
+let count=button.parentElement.querySelector(".likes");
+let number=parseInt(count.textContent);
+count.textContent=(number+(liked?-1:1))+" likes";
+}
+function showCreate(){
+document.getElementById("composer").style.display="block";
+document.getElementById("composer").scrollIntoView({behavior:"smooth"});
+}
+function hideCreate(){
+document.getElementById("composer").style.display="none";
+}
+function publish(){
+let name=document.getElementById("name").value.trim()||"You";
+let caption=document.getElementById("caption").value.trim();
+if(!caption){alert("Please write something first.");return;}
+let post=document.createElement("div");
+post.className="post";
+post.innerHTML='<div class="user"><div class="avatar">👤</div><div><div class="username"></div><div class="handle">@new_wave</div></div></div><div class="art">✨</div><div class="actions"><button>♡</button><span>♧</span><span class="likes">0 likes</span></div><div class="caption"></div>';
+post.querySelector(".username").textContent=name;
+post.querySelector(".caption").textContent=caption;
+post.querySelector(".actions button").onclick=function(){like(this)};
+document.getElementById("posts").prepend(post);
+document.getElementById("name").value="";
+document.getElementById("caption").value="";
+hideCreate();
+}
+</script>
+</body>
+</html>
